@@ -14,6 +14,10 @@ body {
     transition: background-color 0.3s ease;
 }
 
+h2, h3 {
+    color: #00d4b5;
+}
+
 /* Header */
 header {
     background-color: #111;
@@ -87,78 +91,64 @@ section {
     transition: background-color 0.3s ease;
 }
 
-h2 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    color: #00d4b5;
-}
-
-/* Project Styles */
-.project {
+/* Hire Me Section */
+#hire {
     background-color: #333;
-    padding: 20px;
-    margin: 20px 0;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    text-align: left;
+    padding: 40px 20px;
 }
 
-.project h3 {
-    font-size: 2rem;
-    color: #00ff41;
-    margin-bottom: 10px;
+.hire-options {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
 }
 
-.project p {
-    font-size: 1.1rem;
-    color: #ccc;
-    margin-bottom: 15px;
-}
-
-.project-link {
-    color: #00d4b5;
-    font-size: 1.1rem;
-    text-decoration: none;
-    border-bottom: 2px solid #00d4b5;
-}
-
-.project-link:hover {
-    color: #00ff41;
-    border-color: #00ff41;
-}
-
-/* Contact Form */
-form {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #333;
+.hire-option {
+    background-color: #444;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    width: 45%;
 }
 
-form input, form textarea {
-    width: 100%;
-    padding: 15px;
-    margin: 10px 0;
-    background-color: #222;
-    border: none;
-    color: #fff;
-    border-radius: 5px;
-}
-
-form button {
+.hire-button {
     background-color: #00d4b5;
-    color: #fff;
-    padding: 15px 25px;
-    border: none;
+    color: white;
+    padding: 10px 20px;
     border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.1rem;
+    text-decoration: none;
+    margin-top: 10px;
 }
 
-form button:hover {
+.hire-button:hover {
     background-color: #008f7a;
+}
+
+/* Media Query for Mobile Responsiveness */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+    }
+
+    .hero p {
+        font-size: 1.3rem;
+    }
+
+    .hire-options {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hire-option {
+        width: 80%;
+        margin-bottom: 20px;
+    }
 }
 
 /* Footer */
