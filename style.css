@@ -10,12 +10,8 @@ body {
     background-color: #1a1a1a;
     color: #fff;
     line-height: 1.6;
-    padding-top: 100px; /* Account for fixed header */
+    padding-top: 100px;
     transition: background-color 0.3s ease;
-}
-
-h2, h3 {
-    color: #00d4b5;
 }
 
 /* Header */
@@ -26,18 +22,12 @@ header {
     width: 100%;
     top: 0;
     z-index: 10;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-header .header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 nav ul {
     list-style-type: none;
     display: flex;
+    justify-content: center;
 }
 
 nav ul li {
@@ -48,37 +38,31 @@ nav ul li a {
     color: #fff;
     text-decoration: none;
     font-size: 18px;
-    font-weight: 500;
-    transition: color 0.3s ease, transform 0.3s ease;
+    transition: color 0.3s;
 }
 
 nav ul li a:hover {
     color: #00d4b5;
-    transform: scale(1.1);
 }
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('your-image.jpg') center/cover no-repeat;
     height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    animation: fadeIn 1.5s ease-in-out;
 }
 
 .hero h1 {
     font-size: 4rem;
     color: #fff;
-    margin-bottom: 20px;
 }
 
 .hero p {
     font-size: 1.6rem;
     font-weight: 300;
-    color: #fff;
 }
 
 /* Sections */
@@ -87,68 +71,30 @@ section {
     text-align: center;
     background-color: #222;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    transition: background-color 0.3s ease;
 }
 
 /* Hire Me Section */
 #hire {
     background-color: #333;
+    padding: 50px 20px;
     border-radius: 10px;
-    padding: 40px 20px;
 }
 
-.hire-options {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-}
-
-.hire-option {
-    background-color: #444;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    width: 45%;
-}
-
-.hire-button {
-    background-color: #00d4b5;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
+.hire-btn {
+    display: inline-block;
     margin-top: 10px;
+    padding: 12px 25px;
+    background: #00d4b5;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    transition: 0.3s;
 }
 
-.hire-button:hover {
-    background-color: #008f7a;
-}
-
-/* Media Query for Mobile Responsiveness */
-@media (max-width: 768px) {
-    nav ul {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .hero h1 {
-        font-size: 3rem;
-    }
-
-    .hero p {
-        font-size: 1.3rem;
-    }
-
-    .hire-options {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .hire-option {
-        width: 80%;
-        margin-bottom: 20px;
-    }
+.hire-btn:hover {
+    background: #00ff41;
 }
 
 /* Footer */
@@ -157,26 +103,4 @@ footer {
     color: #777;
     text-align: center;
     padding: 20px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-
-/* Animations */
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
-
-/* Dark Mode */
-body.dark-mode {
-    background-color: #121212;
-}
-
-section.dark-mode {
-    background-color: #333;
-}
-
-h2.dark-mode {
-    color: #00d4b5;
 }
