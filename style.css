@@ -1,188 +1,79 @@
-/* Reset and Base Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* Terminal Login Overlay */
+.login-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: #0a0a0a;
+  color: #33ff33;
+  font-family: 'Courier New', monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: #e0e0e0;
-    line-height: 1.6;
+.login-box {
+  background: #111;
+  padding: 2rem;
+  border: 1px solid #33ff33;
+  box-shadow: 0 0 15px #33ff33;
+  width: 300px;
 }
 
-header {
-    background-color: #1c1c1c;
-    padding: 20px;
-    text-align: center;
+.login-box input,
+.login-box button {
+  width: 100%;
+  margin-bottom: 1rem;
+  background: #000;
+  color: #33ff33;
+  border: 1px solid #33ff33;
+  padding: 5px;
 }
 
-header nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
+.login-box button {
+  background: #33ff33;
+  color: #000;
+  font-weight: bold;
 }
 
-header nav ul li {
-    margin: 0 15px;
+.terminal-hidden {
+  display: none;
+  padding: 30px;
+  background: black;
+  color: lime;
+  font-family: 'Courier New', Courier, monospace;
+  animation: fadeIn 2s forwards;
 }
 
-header nav ul li a {
-    color: #e0e0e0;
-    text-decoration: none;
-    font-size: 18px;
-    transition: color 0.3s;
+.typewriter {
+  border-right: 2px solid #33ff33;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+  animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite;
 }
 
-header nav ul li a:hover {
-    color: #00bcd4;
+@keyframes typing {
+  to { width: 100%; }
 }
 
-header button {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 24px;
-    cursor: pointer;
+@keyframes blink {
+  50% { border-color: transparent; }
 }
 
-.hero {
-    text-align: center;
-    padding: 100px 20px;
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
 }
 
-.hero h1 {
-    font-size: 48px;
-    margin-bottom: 10px;
+/* Projects terminal-style */
+.terminal-style {
+  background: #000;
+  color: #33ff33;
+  font-family: monospace;
+  padding: 1rem;
+  margin-top: 1rem;
+  box-shadow: 0 0 10px lime;
 }
-
-.hero p {
-    font-size: 24px;
-}
-
-/* Section Styles */
-section {
-    padding: 50px 20px;
-    text-align: center;
-}
-
-section h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
-}
-
-section p {
-    font-size: 18px;
-    color: #b0b0b0;
-}
-
-.cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    justify-items: center;
-}
-
-.card {
-    background-color: #1e1e1e;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    max-width: 300px;
-}
-
-.card h3 {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.card p {
-    font-size: 16px;
-    color: #b0b0b0;
-}
-
-.project {
-    background-color: #1e1e1e;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
-.project h3 {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.project p {
-    color: #b0b0b0;
-    margin-bottom: 10px;
-}
-
-.project-link {
-    color: #00bcd4;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.hire-btn {
-    background-color: #00bcd4;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 18px;
-    transition: background-color 0.3s;
-}
-
-.hire-btn:hover {
-    background-color: #008c8c;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-form label {
-    margin-bottom: 5px;
-    font-size: 18px;
-}
-
-form input, form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-form button {
-    padding: 10px 20px;
-    background-color: #00bcd4;
-    border: none;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-form button:hover {
-    background-color: #008c8c;
-}
-
-footer {
-    background-color: #1c1c1c;
-    color: #e0e0e0;
-    text-align: center;
-    padding: 20px;
-}
-
-footer p {
-    font-size: 16px;
+.terminal-cmd {
+  color: #00ff00;
 }
