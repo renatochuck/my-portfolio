@@ -1,107 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:fb="http://ogp.me/ns/fb#">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Renato Sahani | Cybersecurity & Ethical Hacking</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="description" content="Renato Sahani - Cybersecurity Enthusiast & Ethical Hacker. Official Portfolio Website.">
+<meta name="robots" content="index, follow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Renato Sahani Official Portfolio">
+<meta property="og:title" content="Renato Sahani Official Portfolio">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://your-portfolio.com/">
+<meta property="og:image" content="https://your-portfolio.com/static/ogp_img.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="Renato Sahani Official Portfolio">
+<meta name="twitter:title" content="Renato Sahani Official Portfolio">
+<meta name="twitter:description" content="Cybersecurity Enthusiast | Ethical Hacking Projects, Certificates, Skills">
+<meta name="twitter:url" content="https://your-portfolio.com/">
+<meta name="twitter:image" content="https://your-portfolio.com/static/ogp_img.png">
+
+<title>Renato Sahani Official Portfolio</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- 🔐 Login Screen -->
-<div id="login-screen" class="login-overlay">
-  <div class="login-box">
-    <h2>🔐 Secure Access</h2>
-    <label>Username:</label>
-    <input type="text" id="username" placeholder="e.g., root" />
-
-    <label>Password:</label>
-    <input type="password" id="password" placeholder="••••••••" />
-
-    <label>Security Question:</label>
-    <p class="question">Which command is used to update Kali Linux packages?</p>
-    <input type="text" id="question" placeholder="Your answer here" />
-
-    <button onclick="verifyAccess()">Unlock</button>
-    <p id="login-status"></p>
-  </div>
+<!-- Intro Screen -->
+<div id="intro">
+  <h1 class="intro-text">Renato Sahani</h1>
 </div>
 
-<!-- 🎉 Welcome Terminal -->
-<div id="welcome-terminal" class="terminal-hidden">
-  <p class="typewriter">Access Granted ✅<br>Welcome, Agent Renato... Initializing dashboard...</p>
-</div>
-
-<!-- 🔧 Main Website Content -->
+<!-- Main Content -->
 <div id="main-content" style="display:none;">
-
   <header>
-    <div class="header-container">
-      <nav>
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About Me</a></li>
-          <li><a href="#certificates">Certificates</a></li>
-          <li><a href="#skills">Skills</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#hire">Hire Me</a></li>
-          <li><a href="#contact">Message Me</a></li>
-        </ul>
-      </nav>
-    </div>
+    <nav>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#works">Works</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <section id="home" class="hero">
+  <section class="hero">
     <h1>Renato Sahani</h1>
-    <p>Ethical Hacker | Content Creator | CTF Player</p>
+    <p>Cybersecurity Enthusiast | Ethical Hacker | Content Creator</p>
   </section>
 
   <section id="about">
     <h2>About Me</h2>
-    <p>I am Renato Sahani, a cybersecurity enthusiast from Nepal exploring ethical hacking and creating detailed content on my YouTube channel.</p>
+    <p>I am Renato Sahani, a cybersecurity enthusiast from Nepal who creates ethical hacking content and shares projects, certificates, and skills online.</p>
   </section>
 
-  <section id="certificates">
-    <h2>📜 Certificates</h2>
-    <div class="cards-container">
-      <div class="card"><h3>CompTIA A+</h3><p>Foundational IT skills.</p></div>
-      <div class="card"><h3>Security+</h3><p>Network security basics.</p></div>
-      <div class="card"><h3>Cisco Cybersecurity</h3><p>Advanced Cisco security.</p></div>
-    </div>
-  </section>
-
-  <section id="skills">
-    <h2>Skills</h2>
-    <div class="cards-container">
-      <div class="card"><h3>Penetration Testing</h3></div>
-      <div class="card"><h3>Kali Linux</h3></div>
-      <div class="card"><h3>Python for Cybersecurity</h3></div>
-    </div>
-  </section>
-
-  <section id="projects">
-    <h2>🧪 Projects</h2>
-    <div class="project terminal-style">
-      <p><span class="terminal-cmd">▶ python kali_install.py</span><br>Installing Kali in VirtualBox...</p>
-      <iframe width="100%" height="315" src="https://www.youtube.com/embed/T5FoTYsmfmA" frameborder="0" allowfullscreen></iframe>
-    </div>
-    <div class="project terminal-style">
-      <p><span class="terminal-cmd">▶ bash usb_lockdown.sh</span><br>Locking down USB ports...</p>
-      <a href="https://github.com/renatox3/USB-Lockdown" target="_blank">View on GitHub</a>
-    </div>
+  <section id="works">
+    <h2>My Works</h2>
+    <p>Projects, YouTube content, and cybersecurity research will be showcased here.</p>
   </section>
 
   <section id="contact">
-    <h2>Message Me</h2>
-    <form>
-      <input type="text" placeholder="Your Name" required />
-      <input type="email" placeholder="Your Email" required />
-      <textarea placeholder="Your Message" required></textarea>
-      <button type="submit">Send</button>
-    </form>
+    <h2>Contact</h2>
+    <p>Email: yourmail@example.com</p>
   </section>
 
-  <footer><p>&copy; 2025 Renato Sahani | CyberSec Ops</p></footer>
+  <footer>
+    <p>&copy; 2025 Renato Sahani</p>
+  </footer>
 </div>
 
 <script src="script.js"></script>
