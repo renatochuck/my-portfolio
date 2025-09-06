@@ -1,79 +1,98 @@
-/* Terminal Login Overlay */
-.login-overlay {
+/* General Reset */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background: #111;
+  color: #fff;
+}
+
+/* ================= INTRO ================= */
+#intro {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background: #0a0a0a;
-  color: #33ff33;
-  font-family: 'Courier New', monospace;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.login-box {
-  background: #111;
-  padding: 2rem;
-  border: 1px solid #33ff33;
-  box-shadow: 0 0 15px #33ff33;
-  width: 300px;
-}
-
-.login-box input,
-.login-box button {
-  width: 100%;
-  margin-bottom: 1rem;
   background: #000;
-  color: #33ff33;
-  border: 1px solid #33ff33;
-  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-.login-box button {
-  background: #33ff33;
-  color: #000;
-  font-weight: bold;
-}
-
-.terminal-hidden {
-  display: none;
-  padding: 30px;
-  background: black;
-  color: lime;
-  font-family: 'Courier New', Courier, monospace;
+.intro-text {
+  font-size: 3rem;
+  color: gold;
+  letter-spacing: 2px;
+  opacity: 0;
   animation: fadeIn 2s forwards;
-}
-
-.typewriter {
-  border-right: 2px solid #33ff33;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 0;
-  animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite;
-}
-
-@keyframes typing {
-  to { width: 100%; }
-}
-
-@keyframes blink {
-  50% { border-color: transparent; }
+  text-shadow: 0 0 10px gold, 0 0 20px orange;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; } to { opacity: 1; }
+  to { opacity: 1; }
 }
 
-/* Projects terminal-style */
-.terminal-style {
+/* ================= NAVIGATION ================= */
+header {
   background: #000;
-  color: #33ff33;
-  font-family: monospace;
-  padding: 1rem;
-  margin-top: 1rem;
-  box-shadow: 0 0 10px lime;
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
 }
-.terminal-cmd {
-  color: #00ff00;
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0;
+  margin: 0;
+}
+
+nav a {
+  text-decoration: none;
+  color: gold;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: orange;
+}
+
+/* ================= HERO ================= */
+.hero {
+  text-align: center;
+  padding: 6rem 2rem;
+  background: radial-gradient(circle, #111, #000);
+}
+
+.hero h1 {
+  font-size: 3rem;
+  color: gold;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+/* ================= SECTIONS ================= */
+section {
+  padding: 4rem 2rem;
+  max-width: 900px;
+  margin: auto;
+}
+
+h2 {
+  color: gold;
+  margin-bottom: 1rem;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  background: #000;
+  color: #777;
+  font-size: 0.9rem;
 }
