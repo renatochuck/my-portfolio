@@ -1,19 +1,10 @@
-function verifyAccess() {
-  const user = document.getElementById('username').value.trim().toLowerCase();
-  const pass = document.getElementById('password').value.trim();
-  const question = document.getElementById('question').value.trim().toLowerCase();
-  const status = document.getElementById('login-status');
-
-  if (user === 'root' && pass === 'toor' && question.includes('apt update')) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('welcome-terminal').style.display = 'block';
-
+// Intro fade and reveal main content
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    document.getElementById('intro').style.opacity = 0;
     setTimeout(() => {
-      document.getElementById('welcome-terminal').style.display = 'none';
+      document.getElementById('intro').style.display = 'none';
       document.getElementById('main-content').style.display = 'block';
-    }, 4500);
-  } else {
-    status.innerText = 'Access Denied. Try again.';
-    status.style.color = 'red';
-  }
-}
+    }, 1000);
+  }, 2500); // intro duration
+});
