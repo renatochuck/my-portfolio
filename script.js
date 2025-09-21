@@ -1,81 +1,236 @@
-/* ================= VARS & BASE ================= */
-:root{
-  --bg0:#03040a; --bg1:#071728; --card:rgba(255,255,255,0.03);
-  --muted:#9fb1c3; --accent1:#4fc3f7; --accent2:#7c4dff;
-  --glass: rgba(255,255,255,0.03);
-  --radius:12px; --maxw:1180px; --ff:Inter,system-ui,Arial;
+/* script.js - interactions: boot, particles, cursor, CLI demo, typing founder message,
+   signature animation, theme toggle, read/copy, contact mock, keyboard shortcuts, confetti. */
+
+document.addEventListener('DOMContentLoaded', () => {
+  // year
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Boot progress simulation
+  const boot = document.getElementById('boot');
+  const bootBar = document.getElementById('boot-bar');
+  let p=0;
+  const bootInt = setInterval(()=> {
+    p = Math.min(100, p + Math.random()*18);
+    bootBar.style.width = p + '%';
+    if(p >= 100){ clearInterval(bootInt); setTimeout(()=> boot.style.display='none', 600); }
+  }, 350);
+
+  // Particles background
+  initParticles('bg-canvas');
+
+  // Custom cursor
+  initCursor();
+
+  // Theme toggle
+  const themeBtn = document.getElementById('theme-btn');
+  const savedTheme = localStorage.getItem('zt-theme');
+  if(savedTheme === 'light') document.body.classList.add('light');
+  themeBtn.addEventListener('click', ()=> {
+    document.body.classList.toggle('light');
+    localStorage.setItem('zt-theme', document.body.classList.contains('light') ? 'light' : 'dark');
+  });
+
+  // CLI demo
+  initCLI();
+
+  // Typed Founder message
+  const founderText = `Welcome to Zerotech.
+
+When I first started exploring the world of cybersecurity, it wasn't about tools or profit — it was about curiosity, trust, and the drive to understand how the digital world truly works.
+That curiosity became passion, and that passion became Zerotech.
+
+At Zerotech, we build more than code; we build trust. Our mission is to push boundaries, design next-gen security, and create a future where technology empowers everyone.
+
+This is only the beginning.
+
+– Renato Sahani
+Founder & Visionary, Zerotech`;
+  startTyping(document.getElementById('typed'), founderText);
+
+  // Signature animation
+  document.getElementById('sig-play').addEventListener('click', animateSignature);
+
+  // Read aloud & copy & confetti
+  document.getElementById('read-btn').addEventListener('click', ()=> speakText(founderText));
+  document.getElementById('copy-btn').addEventListener('click', async ()=> {
+    await navigator.clipboard.writeText(founderText);
+    alert('Message copied to clipboard.');
+  });
+  document.getElementById('confetti-btn').addEventListener('click', ()=> launchConfetti());
+
+  // Accent color change
+  const accent = document.getElementById('accent');
+  accent.addEventListener('input', (e)=> {
+    document.documentElement.style.setProperty('--accent1', e.target.value);
+  });
+
+  // Download report (mock)
+  document.getElementById('dl-report').addEventListener('click', ()=>{
+    const txt = 'Zerotech - Demo Report\\nTarget: example.com\\nDate: ' + new Date().toISOString();
+    const b = new Blob([txt], {type:'text/plain'});
+    const url = URL.createObjectURL(b); const a = document.createElement('a'); a.href=url; a.download='sahanix-report.txt';
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  });
+
+  // Contact form mock
+  document.getElementById('contact-form').addEventListener('submit', (e)=> {
+    e.preventDefault();
+    document.getElementById('form-status').textContent = 'Sending...';
+    setTimeout(()=> { document.getElementById('form-status').textContent = 'Message sent — we will reply within 48 hours.'; e.target.reset(); }, 900);
+  });
+
+  // Keyboard shortcuts
+  window.addEventListener('keydown', (e)=> {
+    if(e.key === 't') themeBtn.click();
+    if(e.key === 'r') document.getElementById('read-btn').click();
+    if(e.key === 'c') document.getElementById('copy-btn').click();
+    if(e.key === 'g') document.getElementById('confetti-btn').click();
+    if(e.key === '/') { e.preventDefault(); document.getElementById('cli-input').focus(); }
+  });
+
+  // mock stats increment
+  setInterval(()=> {
+    const scans = document.getElementById('stat-scans');
+    const users = document.getElementById('stat-users');
+    scans.textContent = Number(scans.textContent || 0) + Math.floor(Math.random()*3);
+    users.textContent = Number(users.textContent || 0) + (Math.random() < 0.25 ? 1 : 0);
+  }, 2500);
+});
+
+/* ----------------- Particles ----------------- */
+function initParticles(id){
+  const c = document.getElementById(id);
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  let w = c.width = innerWidth, h = c.height = innerHeight;
+  window.addEventListener('resize', ()=> { w = c.width = innerWidth; h = c.height = innerHeight; });
+  const N = Math.round((w*h)/80000);
+  const pts = Array.from({length:N}, ()=> ({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,r:Math.random()*1.8+0.6}));
+  let mx=-9999,my=-9999;
+  window.addEventListener('mousemove', (e)=> { mx=e.clientX; my=e.clientY; });
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    for(let i=0;i<pts.length;i++){
+      const a=pts[i];
+      for(let j=i+1;j<pts.length;j++){
+        const b=pts[j];
+        const dx=a.x-b.x, dy=a.y-b.y, d2 = dx*dx+dy*dy;
+        if(d2 < 16000){
+          ctx.strokeStyle = 'rgba(124,77,255,' + (0.12*(1-d2/16000)) + ')';
+          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+        }
+      }
+      // mouse repel
+      const mdx = a.x-mx, mdy=a.y-my, md2 = mdx*mdx+mdy*mdy;
+      if(md2 < 10000){ a.vx += mdx/80000; a.vy += mdy/80000; }
+      a.x += a.vx; a.y += a.vy;
+      if(a.x<0||a.x>w) a.vx *= -1;
+      if(a.y<0||a.y>h) a.vy *= -1;
+      ctx.fillStyle='#7c4dff'; ctx.beginPath(); ctx.arc(a.x,a.y,a.r,0,Math.PI*2); ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
 }
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:var(--ff);background:linear-gradient(180deg,var(--bg0),var(--bg1));color:#e7f7ff}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:28px}
 
-/* ========== BOOT ========== */
-#boot{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;background:#000}
-.boot-logo{font-weight:800;font-size:22px;letter-spacing:2px;color:var(--accent1)}
-.boot-sub{color:var(--muted);margin-top:8px}
-.boot-progress{width:260px;height:8px;background:rgba(255,255,255,0.04);border-radius:6px;margin-top:12px;overflow:hidden}
-#boot-bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent1));transition:width 600ms linear}
+/* ----------------- Cursor ----------------- */
+function initCursor(){
+  const cur = document.getElementById('cursor');
+  if(!cur) return;
+  window.addEventListener('mousemove', (e)=> {
+    cur.style.left = e.clientX + 'px';
+    cur.style.top = e.clientY + 'px';
+  });
+  // enlarge on interactive elements
+  document.addEventListener('mouseover', (e)=>{
+    const t = e.target;
+    if(t.tagName === 'A' || t.tagName === 'BUTTON' || t.closest('.btn-primary')) cur.style.transform = 'translate(-50%,-50%) scale(1.8)';
+  });
+  document.addEventListener('mouseout', (e)=> { document.getElementById('cursor').style.transform = 'translate(-50%,-50%) scale(1)'; });
+}
 
-/* ========== PARTICLE CANVAS ========= */
-#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.85}
+/* ----------------- CLI demo ----------------- */
+function initCLI(){
+  const out = document.getElementById('cli-output');
+  const form = document.getElementById('cli-form');
+  const input = document.getElementById('cli-input');
+  function push(txt, cls){ const d = document.createElement('div'); d.textContent = txt; if(cls) d.className = cls; out.appendChild(d); out.scrollTop = out.scrollHeight; }
+  function fakeScan(target){
+    push(`> initializing scan on ${target}...`);
+    setTimeout(()=> push('• resolving DNS... OK'), 700);
+    setTimeout(()=> push('• checking headers... OK'), 1200);
+    setTimeout(()=> push('• scanning common vulnerabilities...'), 1800);
+    setTimeout(()=> push('! found HIGH: outdated-plugin (cvss:8.1)'), 3000);
+    setTimeout(()=> push('scan complete — 1 high, 0 medium, 2 low'), 3800);
+  }
+  form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const cmd = input.value.trim();
+    if(!cmd) return;
+    push('$ ' + cmd, 'cmd');
+    if(/scan\s+([^\s]+)/i.test(cmd)) fakeScan(cmd.match(/scan\s+([^\s]+)/i)[1]);
+    else if(/help/i.test(cmd)) push('commands: scan <host>, help, clear');
+    else if(/clear/i.test(cmd)) out.innerHTML = '';
+    else push('unknown command — type "help"');
+    input.value = '';
+  });
+}
 
-/* ========== CURSOR ========== */
-.cursor{position:fixed;width:18px;height:18px;border-radius:50%;border:2px solid var(--accent1);transform:translate(-50%,-50%);z-index:9998;pointer-events:none;mix-blend-mode:screen;transition:width .08s,height .08s,transform .08s}
+/* ----------------- Typing effect ----------------- */
+function startTyping(el, text){
+  el.textContent = '';
+  let i=0;
+  const cursor = document.getElementById('ty-cursor');
+  cursor.style.display = 'inline-block';
+  function step(){
+    if(i < text.length){
+      el.textContent += text[i++];
+      el.parentElement.scrollTop = el.parentElement.scrollHeight;
+      setTimeout(step, (text[i-1] === '\n' ? 140 : 18 + Math.random()*30));
+    } else {
+      cursor.style.display = 'none';
+    }
+  }
+  setTimeout(step, 600);
+}
 
-/* ========== HEADER ========== */
-.site-header{position:sticky;top:0;z-index:999;backdrop-filter:blur(6px);background:linear-gradient(180deg,rgba(2,6,10,0.6),rgba(2,6,10,0.2));border-bottom:1px solid rgba(255,255,255,0.02)}
-.site-header .wrap{display:flex;align-items:center;justify-content:space-between}
-.brand{font-weight:800;color:var(--accent1);letter-spacing:2px}
-nav a{margin-left:18px;color:var(--muted);text-decoration:none}
-.btn-ghost{background:transparent;border:0;color:var(--muted);padding:8px;border-radius:8px}
-.btn-outline{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:10px;color:var(--muted)}
-.btn-primary{background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#021018;border:0;padding:8px 12px;border-radius:10px}
+/* ----------------- Signature animation ----------------- */
+function animateSignature(){
+  const path = document.getElementById('sig-path');
+  if(!path) return;
+  const L = path.getTotalLength();
+  path.style.transition = 'none';
+  path.style.strokeDasharray = L;
+  path.style.strokeDashoffset = L;
+  // trigger
+  requestAnimationFrame(()=> {
+    path.style.transition = 'stroke-dashoffset 1.6s ease-in-out';
+    path.style.strokeDashoffset = '0';
+  });
+}
 
-/* ========== HERO ========== */
-.hero{padding:80px 0 40px;position:relative;z-index:2}
-.hero-grid{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:start}
-.title{font-size:clamp(28px,5vw,44px);margin-bottom:10px;color:#fff}
-.lead{color:var(--muted);max-width:560px}
-.cta-row{margin-top:18px;display:flex;gap:12px}
+/* ----------------- Speak ----------------- */
+function speakText(txt){
+  if(!('speechSynthesis' in window)){ alert('Speech not supported'); return; }
+  const u = new SpeechSynthesisUtterance(txt);
+  u.lang = 'en-US'; u.rate = 1; u.pitch = 1;
+  window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
+}
 
-/* mini stats */
-.mini-stats{display:flex;gap:18px;margin-top:18px;color:var(--muted)}
-.mini-stats strong{display:block;font-size:20px;color:#fff}
-
-/* card / CLI */
-.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 10px 40px rgba(0,0,0,0.6)}
-.card-head{font-weight:700;color:var(--muted);margin-bottom:8px}
-.cli{background:rgba(0,0,0,0.45);padding:10px;border-radius:10px;color:#cfefff;font-family:ui-monospace,monospace;font-size:13px}
-.cli-output{min-height:120px;max-height:220px;overflow:auto;padding:8px;border-radius:6px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent)}
-.cli-form{display:flex;gap:8px;margin-top:8px}
-.cli-form input{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
-.cli-form button{padding:8px 12px;border-radius:8px;border:0;background:var(--accent1);color:#021018}
-
-/* ========== SECTIONS ========== */
-.section{padding:60px 0}
-.features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
-.feature{background:var(--card);padding:18px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);text-align:center}
-.products-grid{display:flex;gap:12px;flex-wrap:wrap}
-.product{flex:1 1 220px;background:var(--card);padding:14px;border-radius:10px}
-
-/* ========== FOUNDER ========= */
-.founder-section .founder-card{display:grid;grid-template-columns:1fr 280px;gap:18px;align-items:start;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
-.founder-content{padding:8px}
-.typed{white-space:pre-wrap;font-family:ui-monospace,monospace;line-height:1.75;color:#eaf7ff}
-.ty-cursor{display:inline-block;margin-left:6px;color:var(--accent1);font-weight:700}
-.sig-svg{width:240px;height:56px;display:block;margin-top:12px}
-.founder-tools{display:flex;flex-direction:column;gap:12px;padding:6px}
-
-/* ========== CONTACT FORM ========= */
-.contact-form{display:grid;gap:12px;max-width:700px}
-.contact-form input, .contact-form textarea{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
-.form-actions{display:flex;gap:12px;align-items:center}
-
-/* ========== FOOTER ========= */
-.site-footer{padding:28px 0;border-top:1px solid rgba(255,255,255,0.03);color:var(--muted)}
-/* responsive */
-@media (max-width:960px){
-  .hero-grid{grid-template-columns:1fr;gap:18px}
-  .founder-card{grid-template-columns:1fr;gap:14px}
-  .features-grid{grid-template-columns:repeat(2,1fr)}
+/* ----------------- Confetti (simple) ----------------- */
+function launchConfetti(){
+  // tiny confetti - simple DOM particles
+  const N=40;
+  for(let i=0;i<N;i++){
+    const el = document.createElement('div'); el.className='__cf';
+    el.style.position='fixed'; el.style.left = (50 + (Math.random()-0.5)*40) + '%';
+    el.style.top = (10 + Math.random()*30) + '%';
+    el.style.width = el.style.height = '10px';
+    el.style.background = ['#4fc3f7','#7c4dff','#ffb86b'][Math.floor(Math.random()*3)];
+    el.style.borderRadius='2px'; el.style.opacity='0.95'; el.style.zIndex=99999;
+    document.body.appendChild(el);
+    const dx = (Math.random()-0.5)*200, dy = 200 + Math.random()*300;
+    el.animate([{transform:'translateY(0) translateX(0)', opacity:1},{transform:`translateY(${dy}px) translateX(${dx}px)`, opacity:0}], {duration:1200+Math.random()*800, easing:'cubic-bezier(.2,.8,.2,1)'});
+    setTimeout(()=> el.remove(), 2200);
+  }
 }
