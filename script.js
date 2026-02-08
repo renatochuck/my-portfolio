@@ -243,3 +243,19 @@ function buyItem(item) {
     "This is a fake demo shop."
   );
 }
+// LOGIN DEMO
+function login() {
+  const user = document.getElementById("login-user").value;
+  if (!user) return alert("Enter username");
+  alert("Logged in as " + user + " (demo)");
+  closeLogin();
+}
+
+function closeLogin() {
+  document.getElementById("login-modal").style.display = "none";
+}
+
+// Optional: open login manually from console or button
+function openLogin() {
+  document.getElementById("login-modal").style.display = "flex";
+}
