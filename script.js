@@ -259,3 +259,25 @@ function closeLogin() {
 function openLogin() {
   document.getElementById("login-modal").style.display = "flex";
 }
+// Membership form
+document.getElementById('membership-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = e.target['member-name'].value;
+  const email = e.target['member-email'].value;
+  document.getElementById('membership-status').textContent = `Thanks ${name}! You are now a demo member.`;
+  e.target.reset();
+});
+
+// Shop reservation
+function reserveItem(productName){
+  const userName = prompt(`Enter your name to reserve ${productName}:`);
+  if(!userName) return alert('Reservation cancelled.');
+  
+  const userEmail = prompt('Enter your email:');
+  if(!userEmail) return alert('Reservation cancelled.');
+
+  // Opens Mail app on iPhone with prefilled email
+  const subject = encodeURIComponent(`Reservation: ${productName}`);
+  const body = encodeURIComponent(`Name: ${userName}\nEmail: ${userEmail}\nProduct: ${productName}`);
+  window.location.href = `mailto:your-email@example.com?subject=${subject}&body=${body}`;
+}
