@@ -234,14 +234,6 @@ function launchConfetti(){
     setTimeout(()=> el.remove(), 2200);
   }
 }
-// DEMO SHOP FUNCTION
-function buyItem(item) {
-  alert(
-    "🛒 Reserve Item\n\n" +
-    "Item: " + item + "\n" +
-    "Payment: ¥ Thank you \n\n" +
-    "we will let you know when the product is in stock."
-  );
 }
 // LOGIN DEMO
 function login() {
@@ -290,5 +282,16 @@ function reserveItem(productName){
   if(!userEmail) return alert('Reservation cancelled.');
 
   // Show a simple thank-you message instead of opening mail
+  alert(`Thank you ${userName}! Your reservation for "${productName}" has been received. You will be notified soon.`);
+}
+// Shop reservation
+function reserveItem(productName){
+  const userName = prompt(`Enter your name to reserve "${productName}":`);
+  if(!userName) return alert('Reservation cancelled.');
+
+  const userEmail = prompt('Enter your email:');
+  if(!userEmail) return alert('Reservation cancelled.');
+
+  // Show thank-you message
   alert(`Thank you ${userName}! Your reservation for "${productName}" has been received. You will be notified soon.`);
 }
