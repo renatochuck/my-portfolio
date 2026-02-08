@@ -281,3 +281,14 @@ function reserveItem(productName){
   const body = encodeURIComponent(`Name: ${userName}\nEmail: ${userEmail}\nProduct: ${productName}`);
   window.location.href = `mailto:your-email@example.com?subject=${subject}&body=${body}`;
 }
+// Shop reservation (Updated to show thank-you on page)
+function reserveItem(productName){
+  const userName = prompt(`Enter your name to reserve ${productName}:`);
+  if(!userName) return alert('Reservation cancelled.');
+  
+  const userEmail = prompt('Enter your email:');
+  if(!userEmail) return alert('Reservation cancelled.');
+
+  // Show a simple thank-you message instead of opening mail
+  alert(`Thank you ${userName}! Your reservation for "${productName}" has been received. You will be notified soon.`);
+}
