@@ -106,6 +106,32 @@
       </div>
     </div>
   </section>
+  <!-- Shop (Demo) -->
+<section id="shop" class="section">
+  <div class="wrap">
+    <h2>Shop (Demo)</h2>
+
+    <div class="products-grid">
+      <article class="product">
+        <h3>Hacking Toolkit</h3>
+        <p>¥5,000</p>
+        <button class="btn-primary" onclick="buyItem('Toolkit')">Buy</button>
+      </article>
+
+      <article class="product">
+        <h3>Cybersecurity Book</h3>
+        <p>¥2,800</p>
+        <button class="btn-primary" onclick="buyItem('Book')">Buy</button>
+      </article>
+
+      <article class="product">
+        <h3>Pentest USB Drive</h3>
+        <p>¥3,500</p>
+        <button class="btn-primary" onclick="buyItem('USB Drive')">Buy</button>
+      </article>
+    </div>
+  </div>
+</section>
 
   <!-- Founder message -->
   <section id="founder" class="section founder-section">
@@ -169,5 +195,14 @@
   </footer>
 
   <script src="script.js"></script>
+  <!-- LOGIN MODAL (DEMO) -->
+<div id="login-modal" class="modal">
+  <div class="modal-box">
+    <h3>Login / Create Account</h3>
+    <input id="login-user" placeholder="Username">
+    <button class="btn-primary" onclick="login()">Login</button>
+    <button class="btn-outline" onclick="closeLogin()">Close</button>
+  </div>
+</div>
 </body>
 </html>
