@@ -234,3 +234,12 @@ function launchConfetti(){
     setTimeout(()=> el.remove(), 2200);
   }
 }
+// DEMO SHOP FUNCTION
+function buyItem(item) {
+  alert(
+    "🛒 DEMO PURCHASE\n\n" +
+    "Item: " + item + "\n" +
+    "Payment: ¥ (Demo only)\n\n" +
+    "This is a fake demo shop."
+  );
+}
