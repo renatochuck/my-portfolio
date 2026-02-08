@@ -237,10 +237,10 @@ function launchConfetti(){
 // DEMO SHOP FUNCTION
 function buyItem(item) {
   alert(
-    "🛒 DEMO PURCHASE\n\n" +
+    "🛒 Reserve Item\n\n" +
     "Item: " + item + "\n" +
-    "Payment: ¥ (Demo only)\n\n" +
-    "This is a fake demo shop."
+    "Payment: ¥ Thank you \n\n" +
+    "we will let you know when the product is in stock."
   );
 }
 // LOGIN DEMO
