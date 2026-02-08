@@ -79,3 +79,27 @@ nav a{margin-left:18px;color:var(--muted);text-decoration:none}
   .founder-card{grid-template-columns:1fr;gap:14px}
   .features-grid{grid-template-columns:repeat(2,1fr)}
 }
+/* LOGIN MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-box {
+  background: #071728;
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  text-align: center;
+}
+
+.modal-box input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
