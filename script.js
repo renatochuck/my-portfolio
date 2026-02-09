@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initParticles('bg-canvas');
 
   // Custom cursor
-  initCursor();
+  #initCursor();
 
   // Theme toggle
   const themeBtn = document.getElementById('theme-btn');
@@ -146,13 +146,6 @@ function initParticles(id) {
 }
 
 /* ----------------- Cursor ----------------- */
-function initCursor() {
-  const cur = document.getElementById('cursor');
-  if (!cur) return;
-  window.addEventListener('mousemove', (e) => {
-    cur.style.left = e.clientX + 'px';
-    cur.style.top = e.clientY + 'px';
-  });
   // enlarge on interactive elements
   document.addEventListener('mouseover', (e) => {
     const t = e.target;
