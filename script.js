@@ -247,9 +247,12 @@ function openLogin() { document.getElementById("login-modal").style.display = "f
 
 /* ----------------- Shop reservation ----------------- */
 function reserveItem(productName) {
-  const userName = prompt(`Enter your name to reserve "${productName}":`);
-  if (!userName) return alert('Reservation cancelled.');
-  const userEmail = prompt('Enter your email:');
-  if (!userEmail) return alert('Reservation cancelled.');
-  alert(`Thank you ${userName}! Your reservation for "${productName}" has been received. You will be notified soon.`);
+  const name = prompt(`Enter your name to reserve "${productName}"`);
+  if (!name) return;
+
+  const email = prompt("Enter your email");
+  if (!email) return;
+
+  document.getElementById("reserve-status").textContent =
+    `✅ Thank you ${name}! Your reservation for "${productName}" is confirmed. We will notify you soon.`;
 }
