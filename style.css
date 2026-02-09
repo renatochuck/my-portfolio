@@ -120,3 +120,12 @@ nav a{margin-left:18px;color:var(--muted);text-decoration:none}
   color: #4fc3f7;
   font-weight: 600;
 }
+#user-dashboard {
+  max-width: 420px;
+  margin: auto;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent);
+}
+
+#user-dashboard h3 {
+  margin-bottom: 10px;
+}
