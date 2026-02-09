@@ -256,3 +256,13 @@ function reserveItem(productName) {
   document.getElementById("reserve-status").textContent =
     `✅ Thank you ${name}! Your reservation for "${productName}" is confirmed. We will notify you soon.`;
 }
+document.getElementById("membership-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const name = this["member-name"].value;
+
+  document.getElementById("membership-status").textContent =
+    `🎉 Welcome ${name}! You are now a demo member.`;
+
+  this.reset();
+});
