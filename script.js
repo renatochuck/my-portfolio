@@ -21,9 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Particles background
   initParticles('bg-canvas');
 
-  // Custom cursor
-  #initCursor();
-
   // Theme toggle
   const themeBtn = document.getElementById('theme-btn');
   const savedTheme = localStorage.getItem('zt-theme');
