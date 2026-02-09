@@ -100,3 +100,23 @@ nav a{margin-left:18px;color:var(--muted);text-decoration:none}
   padding: 10px;
   margin: 10px 0;
 }
+#membership {
+  margin-top: 60px;
+}
+
+#membership input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #0b1220;
+  color: #fff;
+  border: 1px solid #2a3a5e;
+  border-radius: 6px;
+}
+
+#membership .status-text {
+  margin-top: 15px;
+  color: #4fc3f7;
+  font-weight: 600;
+}
