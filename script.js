@@ -289,3 +289,20 @@ document.addEventListener('DOMContentLoaded', () => {
     form.reset();
   });
 });
+// ================= USER DASHBOARD =================
+function updateDashboard() {
+  const dashboard = document.getElementById('user-dashboard');
+  const username = localStorage.getItem('zt-username');
+  const membership = localStorage.getItem('zt-membership');
+  const joined = localStorage.getItem('zt-joined');
+
+  if (!username) return;
+
+  dashboard.style.display = 'block';
+  document.getElementById('dash-username').textContent = username;
+  document.getElementById('dash-membership').textContent = membership || 'Free';
+  document.getElementById('dash-joined').textContent = joined || '-';
+}
+
+// Run on page load
+document.addEventListener('DOMContentLoaded', updateDashboard);
