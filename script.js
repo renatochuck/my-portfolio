@@ -1,308 +1,224 @@
-/* script.js - interactions: boot, particles, cursor, CLI demo, typing founder message,
-   signature animation, theme toggle, read/copy, contact mock, keyboard shortcuts, confetti. */
-
+/* ================= MAIN ================= */
 document.addEventListener('DOMContentLoaded', () => {
-  // year
-  document.getElementById('yr').textContent = new Date().getFullYear();
 
-  // Boot progress simulation
+  /* YEAR */
+  const yr = document.getElementById('yr');
+  if (yr) yr.textContent = new Date().getFullYear();
+
+  /* BOOT */
   const boot = document.getElementById('boot');
   const bootBar = document.getElementById('boot-bar');
-  let p = 0;
-  const bootInt = setInterval(() => {
-    p = Math.min(100, p + Math.random() * 18);
-    bootBar.style.width = p + '%';
-    if (p >= 100) {
-      clearInterval(bootInt);
-      setTimeout(() => boot.style.display = 'none', 600);
-    }
-  }, 350);
+  if (boot && bootBar) {
+    let p = 0;
+    const bootInt = setInterval(() => {
+      p = Math.min(100, p + Math.random() * 20);
+      bootBar.style.width = p + '%';
+      if (p >= 100) {
+        clearInterval(bootInt);
+        setTimeout(() => boot.style.display = 'none', 500);
+      }
+    }, 300);
+  }
 
-  // Particles background
+  /* PARTICLES */
   initParticles('bg-canvas');
 
-  // Theme toggle
+  /* THEME */
   const themeBtn = document.getElementById('theme-btn');
-  const savedTheme = localStorage.getItem('zt-theme');
-  if (savedTheme === 'light') document.body.classList.add('light');
-  themeBtn.addEventListener('click', () => {
-    document.body.classList.toggle('light');
-    localStorage.setItem('zt-theme', document.body.classList.contains('light') ? 'light' : 'dark');
-  });
+  if (themeBtn) {
+    const saved = localStorage.getItem('zt-theme');
+    if (saved === 'light') document.body.classList.add('light');
+    themeBtn.onclick = () => {
+      document.body.classList.toggle('light');
+      localStorage.setItem('zt-theme',
+        document.body.classList.contains('light') ? 'light' : 'dark'
+      );
+    };
+  }
 
-  // CLI demo
+  /* CLI */
   initCLI();
 
-  // Typed Founder message
-  const founderText = `Welcome to Zerotech.
+  /* FOUNDER TYPING */
+  const typed = document.getElementById('typed');
+  if (typed) {
+    const founderText = `Welcome to Zerotech.
 
-When I first started exploring the world of cybersecurity, it wasn't about tools or profit — it was about curiosity, trust, and the drive to understand how the digital world truly works.
-That curiosity became passion, and that passion became Zerotech.
+This platform is a demo built to showcase cybersecurity tools, creativity,
+and next-generation ideas.
 
-At Zerotech, we build more than code; we build trust. Our mission is to push boundaries, design next-gen security, and create a future where technology empowers everyone.
+– Renato Sahani`;
+    startTyping(typed, founderText);
+  }
 
-This is only the beginning.
+  /* SIGNATURE */
+  const sigBtn = document.getElementById('sig-play');
+  if (sigBtn) sigBtn.onclick = animateSignature;
 
-– Renato Sahani
-Founder & Visionary, Zerotech`;
-  startTyping(document.getElementById('typed'), founderText);
+  /* CONTACT */
+  const contact = document.getElementById('contact-form');
+  if (contact) {
+    contact.onsubmit = e => {
+      e.preventDefault();
+      document.getElementById('form-status').textContent = 'Message sent successfully.';
+      contact.reset();
+    };
+  }
 
-  // Signature animation
-  document.getElementById('sig-play').addEventListener('click', animateSignature);
+  /* MEMBERSHIP */
+  const memberForm = document.getElementById('membership-form');
+  const memberStatus = document.getElementById('membership-status');
 
-  // Read aloud & copy & confetti
-  document.getElementById('read-btn').addEventListener('click', () => speakText(founderText));
-  document.getElementById('copy-btn').addEventListener('click', async () => {
-    await navigator.clipboard.writeText(founderText);
-    alert('Message copied to clipboard.');
-  });
-  document.getElementById('confetti-btn').addEventListener('click', () => launchConfetti());
+  if (memberForm) {
+    const savedUser = localStorage.getItem('zt-username');
+    if (savedUser) {
+      memberStatus.textContent = `✅ Welcome back, ${savedUser}`;
+      updateDashboard();
+    }
 
-  // Accent color change
-  const accent = document.getElementById('accent');
-  accent.addEventListener('input', (e) => {
-    document.documentElement.style.setProperty('--accent1', e.target.value);
-  });
+    memberForm.onsubmit = e => {
+      e.preventDefault();
+      const name = memberForm['member-name'].value;
+      if (!name) return;
 
-  // Download report (mock)
-  document.getElementById('dl-report').addEventListener('click', () => {
-    const txt = 'Zerotech - Demo Report\nTarget: example.com\nDate: ' + new Date().toISOString();
-    const b = new Blob([txt], { type: 'text/plain' });
-    const url = URL.createObjectURL(b);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'sahanix-report.txt';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  });
+      localStorage.setItem('zt-username', name);
+      localStorage.setItem('zt-membership', 'Active');
+      localStorage.setItem('zt-joined', new Date().toISOString().split('T')[0]);
 
-  // Contact form mock
-  document.getElementById('contact-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    document.getElementById('form-status').textContent = 'Sending...';
-    setTimeout(() => {
-      document.getElementById('form-status').textContent = 'Message sent — we will reply within 48 hours.';
-      e.target.reset();
-    }, 900);
-  });
+      memberStatus.textContent = `🎉 Welcome ${name}! Membership activated.`;
+      memberForm.reset();
+      updateDashboard();
+    };
+  }
 
-  // Keyboard shortcuts
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 't') themeBtn.click();
-    if (e.key === 'r') document.getElementById('read-btn').click();
-    if (e.key === 'c') document.getElementById('copy-btn').click();
-    if (e.key === 'g') document.getElementById('confetti-btn').click();
-    if (e.key === '/') { e.preventDefault(); document.getElementById('cli-input').focus(); }
-  });
-
-  // mock stats increment
-  setInterval(() => {
-    const scans = document.getElementById('stat-scans');
-    const users = document.getElementById('stat-users');
-    scans.textContent = Number(scans.textContent || 0) + Math.floor(Math.random() * 3);
-    users.textContent = Number(users.textContent || 0) + (Math.random() < 0.25 ? 1 : 0);
-  }, 2500);
 });
 
-/* ----------------- Particles ----------------- */
+/* ================= DASHBOARD ================= */
+function updateDashboard() {
+  const dash = document.getElementById('user-dashboard');
+  if (!dash) return;
+
+  const user = localStorage.getItem('zt-username');
+  if (!user) return;
+
+  dash.style.display = 'block';
+  document.getElementById('dash-username').textContent = user;
+  document.getElementById('dash-membership').textContent =
+    localStorage.getItem('zt-membership') || 'Free';
+  document.getElementById('dash-joined').textContent =
+    localStorage.getItem('zt-joined') || '-';
+}
+
+/* ================= LOGIN ================= */
+function login() {
+  const user = document.getElementById('login-user').value;
+  if (!user) return alert('Enter username');
+
+  localStorage.setItem('zt-username', user);
+  localStorage.setItem('zt-membership', 'Free');
+  localStorage.setItem('zt-joined', new Date().toISOString().split('T')[0]);
+
+  updateDashboard();
+  closeLogin();
+}
+function openLogin() {
+  document.getElementById('login-modal').style.display = 'flex';
+}
+function closeLogin() {
+  document.getElementById('login-modal').style.display = 'none';
+}
+
+/* ================= SHOP RESERVATION ================= */
+function reserveItem(productName) {
+  const name = prompt(`Enter your name to reserve "${productName}"`);
+  if (!name) return;
+
+  const email = prompt('Enter your email');
+  if (!email) return;
+
+  const status = document.getElementById('reserve-status');
+  if (status) {
+    status.textContent =
+      `✅ Thank you ${name}! Your reservation for "${productName}" has been received.`;
+  }
+}
+
+/* ================= CLI ================= */
+function initCLI() {
+  const out = document.getElementById('cli-output');
+  const form = document.getElementById('cli-form');
+  const input = document.getElementById('cli-input');
+  if (!out || !form || !input) return;
+
+  const push = t => {
+    const d = document.createElement('div');
+    d.textContent = t;
+    out.appendChild(d);
+    out.scrollTop = out.scrollHeight;
+  };
+
+  form.onsubmit = e => {
+    e.preventDefault();
+    const cmd = input.value.trim();
+    if (!cmd) return;
+    push('$ ' + cmd);
+    push('Scan complete — demo result');
+    input.value = '';
+  };
+}
+
+/* ================= PARTICLES ================= */
 function initParticles(id) {
   const c = document.getElementById(id);
   if (!c) return;
   const ctx = c.getContext('2d');
   let w = c.width = innerWidth, h = c.height = innerHeight;
-  window.addEventListener('resize', () => { w = c.width = innerWidth; h = c.height = innerHeight; });
-  const N = Math.round((w * h) / 80000);
-  const pts = Array.from({ length: N }, () => ({ x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, r: Math.random() * 1.8 + 0.6 }));
-  let mx = -9999, my = -9999;
-  window.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
+  window.onresize = () => {
+    w = c.width = innerWidth;
+    h = c.height = innerHeight;
+  };
+
+  const pts = Array.from({ length: 60 }, () => ({
+    x: Math.random() * w,
+    y: Math.random() * h,
+    vx: (Math.random() - .5) * .3,
+    vy: (Math.random() - .5) * .3
+  }));
+
   function draw() {
     ctx.clearRect(0, 0, w, h);
-    for (let i = 0; i < pts.length; i++) {
-      const a = pts[i];
-      for (let j = i + 1; j < pts.length; j++) {
-        const b = pts[j];
-        const dx = a.x - b.x, dy = a.y - b.y, d2 = dx * dx + dy * dy;
-        if (d2 < 16000) {
-          ctx.strokeStyle = 'rgba(124,77,255,' + (0.12 * (1 - d2 / 16000)) + ')';
-          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-        }
-      }
-      // mouse repel
-      const mdx = a.x - mx, mdy = a.y - my, md2 = mdx * mdx + mdy * mdy;
-      if (md2 < 10000) { a.vx += mdx / 80000; a.vy += mdy / 80000; }
-      a.x += a.vx; a.y += a.vy;
-      if (a.x < 0 || a.x > w) a.vx *= -1;
-      if (a.y < 0 || a.y > h) a.vy *= -1;
-      ctx.fillStyle = '#7c4dff'; ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2); ctx.fill();
-    }
+    pts.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > w) p.vx *= -1;
+      if (p.y < 0 || p.y > h) p.vy *= -1;
+      ctx.fillStyle = '#7c4dff';
+      ctx.fillRect(p.x, p.y, 2, 2);
+    });
     requestAnimationFrame(draw);
   }
   draw();
 }
 
-/* ----------------- Cursor ----------------- */
-  // enlarge on interactive elements
-  document.addEventListener('mouseover', (e) => {
-    const t = e.target;
-    if (t.tagName === 'A' || t.tagName === 'BUTTON' || t.closest('.btn-primary')) cur.style.transform = 'translate(-50%,-50%) scale(1.8)';
-  });
-  document.addEventListener('mouseout', (e) => { cur.style.transform = 'translate(-50%,-50%) scale(1)'; });
-}
-
-/* ----------------- CLI demo ----------------- */
-function initCLI() {
-  const out = document.getElementById('cli-output');
-  const form = document.getElementById('cli-form');
-  const input = document.getElementById('cli-input');
-  function push(txt, cls) { const d = document.createElement('div'); d.textContent = txt; if (cls) d.className = cls; out.appendChild(d); out.scrollTop = out.scrollHeight; }
-  function fakeScan(target) {
-    push(`> initializing scan on ${target}...`);
-    setTimeout(() => push('• resolving DNS... OK'), 700);
-    setTimeout(() => push('• checking headers... OK'), 1200);
-    setTimeout(() => push('• scanning common vulnerabilities...'), 1800);
-    setTimeout(() => push('! found HIGH: outdated-plugin (cvss:8.1)'), 3000);
-    setTimeout(() => push('scan complete — 1 high, 0 medium, 2 low'), 3800);
-  }
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const cmd = input.value.trim();
-    if (!cmd) return;
-    push('$ ' + cmd, 'cmd');
-    if (/scan\s+([^\s]+)/i.test(cmd)) fakeScan(cmd.match(/scan\s+([^\s]+)/i)[1]);
-    else if (/help/i.test(cmd)) push('commands: scan <host>, help, clear');
-    else if (/clear/i.test(cmd)) out.innerHTML = '';
-    else push('unknown command — type "help"');
-    input.value = '';
-  });
-}
-
-/* ----------------- Typing effect ----------------- */
+/* ================= TYPING ================= */
 function startTyping(el, text) {
-  el.textContent = '';
   let i = 0;
-  const cursor = document.getElementById('ty-cursor');
-  cursor.style.display = 'inline-block';
-  function step() {
+  el.textContent = '';
+  (function type() {
     if (i < text.length) {
       el.textContent += text[i++];
-      el.parentElement.scrollTop = el.parentElement.scrollHeight;
-      setTimeout(step, (text[i - 1] === '\n' ? 140 : 18 + Math.random() * 30));
-    } else {
-      cursor.style.display = 'none';
+      setTimeout(type, 25);
     }
-  }
-  setTimeout(step, 600);
+  })();
 }
 
-/* ----------------- Signature animation ----------------- */
+/* ================= SIGNATURE ================= */
 function animateSignature() {
   const path = document.getElementById('sig-path');
   if (!path) return;
-  const L = path.getTotalLength();
-  path.style.transition = 'none';
-  path.style.strokeDasharray = L;
-  path.style.strokeDashoffset = L;
-  requestAnimationFrame(() => {
-    path.style.transition = 'stroke-dashoffset 1.6s ease-in-out';
-    path.style.strokeDashoffset = '0';
-  });
+  const len = path.getTotalLength();
+  path.style.strokeDasharray = len;
+  path.style.strokeDashoffset = len;
+  path.getBoundingClientRect();
+  path.style.transition = 'stroke-dashoffset 1.5s ease';
+  path.style.strokeDashoffset = '0';
 }
-
-/* ----------------- Speak ----------------- */
-function speakText(txt) {
-  if (!('speechSynthesis' in window)) { alert('Speech not supported'); return; }
-  const u = new SpeechSynthesisUtterance(txt);
-  u.lang = 'en-US'; u.rate = 1; u.pitch = 1;
-  window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
-}
-
-/* ----------------- Confetti (simple) ----------------- */
-function launchConfetti() {
-  const N = 40;
-  for (let i = 0; i < N; i++) {
-    const el = document.createElement('div'); el.className = '__cf';
-    el.style.position = 'fixed'; el.style.left = (50 + (Math.random() - 0.5) * 40) + '%';
-    el.style.top = (10 + Math.random() * 30) + '%';
-    el.style.width = el.style.height = '10px';
-    el.style.background = ['#4fc3f7', '#7c4dff', '#ffb86b'][Math.floor(Math.random() * 3)];
-    el.style.borderRadius = '2px'; el.style.opacity = '0.95'; el.style.zIndex = 99999;
-    document.body.appendChild(el);
-    const dx = (Math.random() - 0.5) * 200, dy = 200 + Math.random() * 300;
-    el.animate([{ transform: 'translateY(0) translateX(0)', opacity: 1 }, { transform: `translateY(${dy}px) translateX(${dx}px)`, opacity: 0 }], { duration: 1200 + Math.random() * 800, easing: 'cubic-bezier(.2,.8,.2,1)' });
-    setTimeout(() => el.remove(), 2200);
-  }
-}
-
-/* ----------------- LOGIN DEMO ----------------- */
-function login() {
-  const user = document.getElementById("login-user").value;
-  if (!user) return alert("Enter username");
-  alert("Logged in as " + user + " (demo)");
-  closeLogin();
-}
-function closeLogin() { document.getElementById("login-modal").style.display = "none"; }
-function openLogin() { document.getElementById("login-modal").style.display = "flex"; }
-
-/* ----------------- Shop reservation ----------------- */
-function reserveItem(productName) {
-  const name = prompt(`Enter your name to reserve "${productName}"`);
-  if (!name) return;
-
-  const email = prompt("Enter your email");
-  if (!email) return;
-
-  document.getElementById("reserve-status").textContent =
-    `✅ Thank you ${name}! Your reservation for "${productName}" is confirmed. We will notify you soon.`;
-}
-document.getElementById("membership-form").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  const name = this["member-name"].value;
-
-  document.getElementById("membership-status").textContent =
-    `🎉 Welcome ${name}! You are now a demo member.`;
-
-  this.reset();
-});
-// MEMBERSHIP DEMO
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('membership-form');
-  const status = document.getElementById('membership-status');
-
-  if (!form) return;
-
-  // show saved member
-  const savedMember = localStorage.getItem('zt-member');
-  if (savedMember) {
-    status.textContent = `✅ Welcome back, ${savedMember}! You are a demo member.`;
-  }
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('member-name').value;
-    const email = document.getElementById('member-email').value;
-
-    localStorage.setItem('zt-member', name);
-    status.textContent = `🎉 Thank you ${name}! You are now a demo member.`;
-    form.reset();
-  });
-});
-// ================= USER DASHBOARD =================
-function updateDashboard() {
-  const dashboard = document.getElementById('user-dashboard');
-  const username = localStorage.getItem('zt-username');
-  const membership = localStorage.getItem('zt-membership');
-  const joined = localStorage.getItem('zt-joined');
-
-  if (!username) return;
-
-  dashboard.style.display = 'block';
-  document.getElementById('dash-username').textContent = username;
-  document.getElementById('dash-membership').textContent = membership || 'Free';
-  document.getElementById('dash-joined').textContent = joined || '-';
-}
-
-// Run on page load
-document.addEventListener('DOMContentLoaded', updateDashboard);
