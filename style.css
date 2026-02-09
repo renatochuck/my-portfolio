@@ -17,10 +17,7 @@ html,body{height:100%;margin:0;font-family:var(--ff);background:linear-gradient(
 #boot-bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent1));transition:width 600ms linear}
 
 /* ========== PARTICLE CANVAS ========= */
-#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.85}
-
-/* ========== CURSOR ========== */
-.cursor{positi#18px;height:18px;border-radius:50%;border:2px solid var(--accent1);transform:translate(-50%,-50%);z-index:9998;pointer-events:none;mix-blend-mode:screen;transition:width .08s,height .08s,transform .08s}
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;
 
 /* ========== HEADER ========== */
 .site-header{position:sticky;top:0;z-index:999;backdrop-filter:blur(6px);background:linear-gradient(180deg,rgba(2,6,10,0.6),rgba(2,6,10,0.2));border-bottom:1px solid rgba(255,255,255,0.02)}
