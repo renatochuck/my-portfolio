@@ -266,3 +266,26 @@ document.getElementById("membership-form").addEventListener("submit", function(e
 
   this.reset();
 });
+// MEMBERSHIP DEMO
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('membership-form');
+  const status = document.getElementById('membership-status');
+
+  if (!form) return;
+
+  // show saved member
+  const savedMember = localStorage.getItem('zt-member');
+  if (savedMember) {
+    status.textContent = `✅ Welcome back, ${savedMember}! You are a demo member.`;
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('member-name').value;
+    const email = document.getElementById('member-email').value;
+
+    localStorage.setItem('zt-member', name);
+    status.textContent = `🎉 Thank you ${name}! You are now a demo member.`;
+    form.reset();
+  });
+});
